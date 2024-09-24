@@ -15,6 +15,7 @@ NEWSPIDER_MODULE = "ad_scraper.spiders"
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "ad_scraper (+http://www.yourdomain.com)"
+# USER_AGENT = 'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -37,10 +38,17 @@ ROBOTSTXT_OBEY = True
 #TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
-#DEFAULT_REQUEST_HEADERS = {
-#    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-#    "Accept-Language": "en",
-#}
+DEFAULT_REQUEST_HEADERS = {
+   "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+   "Accept-Language": "en",
+}
+
+# ROTATING_PROXY_LIST = [
+#     '143.110.240.94:18093',
+#     '47.91.110.154:1080',
+#     '46.183.124.129:53551',
+#     "200.32.105.86:4153"
+# ]
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
@@ -48,11 +56,22 @@ ROBOTSTXT_OBEY = True
 #    "ad_scraper.middlewares.AdScraperSpiderMiddleware": 543,
 #}
 
+SCRAPEOPS_API_KEY = "c779bafb-3753-4ced-80e0-be690a6b85b6"
+SCRAPEOPS_FAKE_USER_AGENT_ENDPOINT = True
+SCRAPEOPS_FAKE_BROWSER_HEADER_ENABLED = True
+SCRAPEOPS_NUM_RESULTS = 10
+# SCRAPEOPS_PROXY_ENABLED = True
+
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    "ad_scraper.middlewares.AdScraperDownloaderMiddleware": 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+  #  "ad_scraper.middlewares.AdScraperDownloaderMiddleware": 543,
+  "ad_scraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 400,
+  # 'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
+  #   'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
+  # 'scrapeops_scrapy_proxy_sdk.scrapeops_scrapy_proxy_sdk.ScrapeOpsScrapyProxySdk': 725,
+
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -68,16 +87,16 @@ ROBOTSTXT_OBEY = True
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
-#AUTOTHROTTLE_ENABLED = True
+AUTOTHROTTLE_ENABLED = True
 # The initial download delay
-#AUTOTHROTTLE_START_DELAY = 5
+AUTOTHROTTLE_START_DELAY = 5
 # The maximum download delay to be set in case of high latencies
-#AUTOTHROTTLE_MAX_DELAY = 60
+AUTOTHROTTLE_MAX_DELAY = 60
 # The average number of requests Scrapy should be sending in parallel to
 # each remote server
-#AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
+AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 # Enable showing throttling stats for every response received:
-#AUTOTHROTTLE_DEBUG = False
+AUTOTHROTTLE_DEBUG = False
 
 # Enable and configure HTTP caching (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
