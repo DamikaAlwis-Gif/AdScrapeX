@@ -8,7 +8,7 @@ class HitadSpider(scrapy.Spider):
 
     def parse(self, response):
         # get all ad links in a page
-        ad_links = response.css(".single-ads-product a::attr(href)").getall()
+        ad_links = response.css(".single-ads-product .product-image a::attr(href)").getall()
 
         # follow each ad link and parse the ad
         for ad_link in ad_links:
@@ -16,15 +16,20 @@ class HitadSpider(scrapy.Spider):
 
         # get the next page link
         # the next page link is in the last li element with an i element
-        li_element_with_next_page_link = response.xpath('//ul[@class="pagination justify-content-center"]/li[count(.//i)=1]')
+        li_element_with_next_page_link = response.xpath('//ul[contains(@class, "pagination")]/li/a[@rel="next"]')
         next_page_link = li_element_with_next_page_link.css('a::attr(href)').get()
 
         # follow the next page link and parse the ads
         if next_page_link:
+            print("***************************** next page link: ", next_page_link)
             yield response.follow(next_page_link, self.parse)
+        else:
+            print("***************************** no more pages")    
         
 
     def parse_ad(self, response):
+
+        print("***************************** parsing ad: ", response.url)
         # get the url of the ad
         ad_url = response.url
         # get the image urls
@@ -51,6 +56,8 @@ class HitadSpider(scrapy.Spider):
             desription = [item.strip() for item in temp_description if item.strip()]
             # get the date and time of the ad 
             date_time = desription[-1]
+
+            combined_description = " ".join(desription[:-1])
             
         # in some ads the description is in a div with class media
         media_divs = response.css("div.media")
@@ -59,15 +66,13 @@ class HitadSpider(scrapy.Spider):
             temp_description = media_divs.css("p ::text").getall()
             # remove empty strings
             desription = [item.strip() for item in temp_description if item.strip()]
-
-
-        ad   
+            combined_description = " ".join(desription)
 
         yield{
             
             "ad_title": ad_title,
             "more_details": more_details,
-            "description": desription,
+            "description": combined_description,
             "features": cleaned_features,
             "breadcrumbs": cleaned_breadcrumbs,
             "date_time": date_time,
