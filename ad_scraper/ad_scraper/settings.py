@@ -6,6 +6,10 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 BOT_NAME = "ad_scraper"
 
@@ -56,7 +60,7 @@ SPIDER_MIDDLEWARES = {
    "ad_scraper.middlewares.AdScraperSpiderMiddleware": 543,
 }
 
-SCRAPEOPS_API_KEY = "c779bafb-3753-4ced-80e0-be690a6b85b6"
+SCRAPEOPS_API_KEY = os.getenv("SCRAPEOPS_API_KEY")
 SCRAPEOPS_FAKE_USER_AGENT_ENDPOINT = True
 SCRAPEOPS_FAKE_BROWSER_HEADER_ENABLED = True
 SCRAPEOPS_NUM_RESULTS = 10
@@ -121,3 +125,5 @@ DOWNLOAD_HANDLERS = {
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 # PLAYWRIGHT_LAUNCH_OPTIONS = {
 #       "headless": False,}
+
+RETRY_TIMES = 4
