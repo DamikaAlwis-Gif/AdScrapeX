@@ -1,115 +1,3 @@
-# from typing import Iterable
-# import scrapy
-# from scrapy_playwright.page import PageMethod
-# from urllib.parse import urljoin
-# class IkmanSpider(scrapy.Spider):
-#     name = "ikman"
-#     allowed_domains = ["ikman.lk"]
-#     start_urls = ["https://ikman.lk",
-#                   "https://ikman.lk/en/ads/sri-lanka/three-wheelers"]
-    
-#     custom_settings = {
-
-#         # "PLAYWRIGHT_ABORT_REQUEST": should_abort_request,
-#         "FEEDS": {
-#             "output/%(name)s_%(time)s.json": {
-#                 "format": "json",
-#                 "overwrite": True,
-
-#             }
-#         },
-
-#         # "PLAYWRIGHT_LAUNCH_OPTIONS": {
-#         #     "headless": False,
-#         # }
-
-#     }
-
-    
-#     def start_requests(self):
-#         url = self.start_urls[1]
-#         yield scrapy.Request(
-#             url=url,
-#             meta={
-#                 "playwright": True,
-#                 "playwright_page_methods": [
-#                     PageMethod("wait_for_selector", "//div[contains(@class, 'ad-list-container')]//ul[contains(@class, 'list')]")
-#                 ],
-#                 "playwright_include_page": True,
-#             },
-#             callback=self.parse
-#         )
-
-    
-#     async def parse(self, response):
-#         self.logger.info(f"Parsing {response.url}")
-#         page = response.meta["playwright_page"]
-
-#         while True:
-#             # ad_items = response.xpath("//div[contains(@class, 'ad-list-container')]//ul[contains(@class, 'list')]//li")
-#             content = await page.content()
-#             selector = scrapy.Selector(text=content)
-#             ad_items = selector.xpath("//div[contains(@class, 'ad-list-container')]//ul[contains(@class, 'list')]//li")
-#             print(f"Found {len(ad_items)} ads")
-        
-#             for ad_item in ad_items:
-                
-#                 ad_url = ad_item.xpath("//a[contains(@class, 'card-link')]/@href").get()
-#                 # ad_title = ad_item.xpath(".//a[contains(@class, 'card-link')]/@title").get()
-#                 print(ad_url)
-#                 base_url = "https://ikman.lk"
-#                 ad_url = urljoin(base_url, ad_url)
-#                 print(ad_url)
-
-#                 yield scrapy.Request(
-#                     url= ad_url,
-#                     callback= self.parse_ad,
-#                     meta = {
-#                         "playwright": True,
-#                         "playwright_page_methods": [
-#                             PageMethod("wait_for_selector", "//div[contains(@class, 'details-section')]")
-#                         ]
-#                     }
-#                     )
-                
-#             next_page_button = await page.wait_for_selector("//div[contains(@class, 'pagination')]//li[contains(@class, 'nextButton')]/a")
-#             if next_page_button:
-#                 await next_page_button.click()
-
-#                 await page.wait_for_selector("//div[contains(@class, 'ad-list-container')]//ul[contains(@class, 'list')]")
-
-#             else:
-#                 break
-
-#         await page.close()            
-
-
-            
-        
-        
-
-
-#     def parse_ad(self, response):
-
-#         self.logger.info(f"Parsing ad {response.url}")
-#         ad_title = response.xpath("//h1[contains(@class, 'title')]/text()").get()
-#         sub_title = response.xpath("//span[contains(@class, 'sub-title')]/div[contains(@class,'subtitle-wrapper')]/div[1]//text()").getall()
-#         price = response.xpath("//div[contains(@class, 'price-section')]//text()").getall()
-#         ad_attributes = response.xpath("//div[contains(@class, 'ad-meta')]//text()").getall()
-#         ad_description = response.xpath("//div[contains(@class, 'description-section')]//text()").getall()
-#         # image_urls = response.xpath("//div[contains(@class,'gallery')]//img/@src").getall()
-#         yield {
-#             "title": ad_title,
-#             "sub_title": sub_title,
-#             "price": price,
-#             "attributes": ad_attributes,
-#             "description": ad_description,
-#             "url": response.url,
-#             # "image_urls": image_urls
-
-#         }
-
-        
 import scrapy
 from scrapy_playwright.page import PageMethod
 from urllib.parse import parse_qs, urlencode, urljoin, urlparse
@@ -123,12 +11,20 @@ class IkmanSpider(scrapy.Spider):
                   "https://ikman.lk/en/ads/sri-lanka/lorries",
                   "https://ikman.lk/en/ads/sri-lanka/heavy-duty?page=3",
                   "https://ikman.lk/en/ads/sri-lanka/tractors?page=2",
-                  "https://ikman.lk/en/ads/sri-lanka/bicycles?sort=date&order=desc&buy_now=0&urgent=0&page=60",
+                  "https://ikman.lk/en/ads/sri-lanka/bicycles?sort=date&order=desc&buy_now=0&urgent=0&page=64",
+                  "https://ikman.lk/en/ads/sri-lanka/buses",
+                  "https://ikman.lk/en/ads/sri-lanka/land-for-sale",
+                  "https://ikman.lk/en/ads/sri-lanka/cars?page=6",
+                  "https://ikman.lk/en/ads/sri-lanka/land-for-sale?sort=date&order=desc&buy_now=0&urgent=0&page=80",
+                  "https://ikman.lk/en/ads/sri-lanka/apartments-for-sale?sort=date&order=desc&buy_now=0&urgent=0&page=56",
+                  "https://ikman.lk/en/ads/sri-lanka/apartment-rentals?sort=date&order=desc&buy_now=0&urgent=0&page=18",
+                  "https://ikman.lk/en/ads/sri-lanka/house-rentals?sort=date&order=desc&buy_now=0&urgent=0&page=5"
                   ]
 
     # three wheel page 100 to go
     # heavy duty done
-    # tractors done
+    # tractors 
+    # land for sale 140 to go
     async def should_abort_request(request):
         if request.resource_type in [ "media", "font"]:
             return True
@@ -149,7 +45,7 @@ class IkmanSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        url = self.start_urls[5]
+        url = self.start_urls[-1]
         yield scrapy.Request(
             url=url,
             meta={
@@ -216,9 +112,11 @@ class IkmanSpider(scrapy.Spider):
                 "playwright_page_methods": [
                     PageMethod("wait_for_selector", "//div[contains(@class, 'ad-list-container')]//ul[contains(@class, 'list')]")
                 ],
+                
                 # "playwright_include_page": True,
             },
-            callback=self.parse
+            callback=self.parse,
+            errback= self.error_handler
         )
 
 
@@ -242,7 +140,7 @@ class IkmanSpider(scrapy.Spider):
         ad_description = response.xpath(
             "//div[contains(@class, 'description-section')]//text()").getall()
         image_urls = response.xpath("//div[contains(@class,'gallery')]//img/@src").getall()
-
+        breadcrumbs = response.xpath("//div[contains(@class, 'bread-crumb-wrapper')]//li//text()").getall()
 
         yield {
             "title": ad_title,
@@ -251,8 +149,15 @@ class IkmanSpider(scrapy.Spider):
             "attributes": ad_attributes,
             "description": ad_description,
             "url": response.url,
-            "image_urls": image_urls
+            "image_urls": image_urls,
+            "breadcrumbs": breadcrumbs
         }
+
+    def error_handler(self, failure):
+        self.logger.error(f"An error occurred: {failure}")
+        request = failure.request
+        self.logger.error(f"Request URL: {request.url}")
+        
 
 
   # while True:

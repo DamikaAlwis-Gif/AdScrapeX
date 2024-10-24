@@ -7,6 +7,10 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
 BOT_NAME = "ad_scraper"
 
 SPIDER_MODULES = ["ad_scraper.spiders"]
@@ -43,12 +47,7 @@ DEFAULT_REQUEST_HEADERS = {
    "Accept-Language": "en",
 }
 
-# ROTATING_PROXY_LIST = [
-#     '143.110.240.94:18093',
-#     '47.91.110.154:1080',
-#     '46.183.124.129:53551',
-#     "200.32.105.86:4153"
-# ]
+
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
@@ -56,7 +55,7 @@ SPIDER_MIDDLEWARES = {
    "ad_scraper.middlewares.AdScraperSpiderMiddleware": 543,
 }
 
-SCRAPEOPS_API_KEY = "c779bafb-3753-4ced-80e0-be690a6b85b6"
+SCRAPEOPS_API_KEY = os.environ.get("SCRAPEOPS_API_KEY")
 SCRAPEOPS_FAKE_USER_AGENT_ENDPOINT = True
 SCRAPEOPS_FAKE_BROWSER_HEADER_ENABLED = True
 SCRAPEOPS_NUM_RESULTS = 10
