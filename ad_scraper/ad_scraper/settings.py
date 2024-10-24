@@ -6,6 +6,7 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -47,12 +48,7 @@ DEFAULT_REQUEST_HEADERS = {
    "Accept-Language": "en",
 }
 
-# ROTATING_PROXY_LIST = [
-#     '143.110.240.94:18093',
-#     '47.91.110.154:1080',
-#     '46.183.124.129:53551',
-#     "200.32.105.86:4153"
-# ]
+
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
@@ -126,4 +122,15 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 # PLAYWRIGHT_LAUNCH_OPTIONS = {
 #       "headless": False,}
 
+RETRY_ENABLED = True
 RETRY_TIMES = 4
+
+
+# # Enable logging
+# LOG_ENABLED = True
+
+# # Set the logging level (optional: INFO, WARNING, ERROR, etc.)
+# LOG_LEVEL = 'INFO'
+
+# # Define the file where logs will be stored
+# LOG_FILE = 'scrapy.log'
