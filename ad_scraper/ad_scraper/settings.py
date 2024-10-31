@@ -120,3 +120,21 @@ DOWNLOAD_HANDLERS = {
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 # PLAYWRIGHT_LAUNCH_OPTIONS = {
 #       "headless": False,}
+
+RETRY_ENABLED = True
+RETRY_TIMES = 3
+RETRY_EXCEPTIONS= [
+    'twisted.internet.defer.TimeoutError',
+    'twisted.internet.error.TimeoutError',
+    'twisted.internet.error.DNSLookupError',
+    'twisted.internet.error.ConnectionRefusedError',
+    'twisted.internet.error.ConnectionDone',
+    'twisted.internet.error.ConnectError',
+    'twisted.internet.error.ConnectionLost',
+    'twisted.internet.error.TCPTimedOutError',
+    'twisted.web.client.ResponseFailed',
+    IOError,
+    'scrapy.core.downloader.handlers.http11.TunnelError',
+    'playwright._impl._errors.Error', # General Playwright error
+    'playwright._impl._errors.TimeoutError'  # Playwright-specific timeout error
+]
