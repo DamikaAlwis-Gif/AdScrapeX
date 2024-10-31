@@ -1,7 +1,7 @@
 import scrapy
 from scrapy_playwright.page import PageMethod
 from urllib.parse import parse_qs, urlencode, urljoin, urlparse
-
+from ..utils import logger
 
 class IkmanSpider(scrapy.Spider):
     name = "ikman"
@@ -18,13 +18,12 @@ class IkmanSpider(scrapy.Spider):
                   "https://ikman.lk/en/ads/sri-lanka/land-for-sale?sort=date&order=desc&buy_now=0&urgent=0&page=80",
                   "https://ikman.lk/en/ads/sri-lanka/apartments-for-sale?sort=date&order=desc&buy_now=0&urgent=0&page=56",
                   "https://ikman.lk/en/ads/sri-lanka/apartment-rentals?sort=date&order=desc&buy_now=0&urgent=0&page=18",
-                  "https://ikman.lk/en/ads/sri-lanka/house-rentals?sort=date&order=desc&buy_now=0&urgent=0&page=5"
+                  "https://ikman.lk/en/ads/sri-lanka/house-rentals?sort=date&order=desc&buy_now=0&urgent=0&page=5",
+                  "https://ikman.lk/en/ads/sri-lanka/mobile-phones?sort=date&order=desc&buy_now=0&urgent=0&page=2",
+                  "https://ikman.lk/en/ads/sri-lanka/computers-tablets?sort=date&order=desc&buy_now=0&urgent=0&page=9",
+                  "https://ikman.lk/en/ads/sri-lanka/computer-accessories?sort=date&order=desc&buy_now=0&urgent=0&page=1"
                   ]
-
-    # three wheel page 100 to go
-    # heavy duty done
-    # tractors 
-    # land for sale 140 to go
+    failed_url_logger = logger.get_failed_url_logger()
     async def should_abort_request(request):
         if request.resource_type in [ "media", "font"]:
             return True
@@ -86,6 +85,7 @@ class IkmanSpider(scrapy.Spider):
                             # PageMethod("wait_for_selector", "//div[contains(@class, 'gallery')]//img"),
                         ],
                         # "playwright_include_page": True,
+
                     }
                 )
         current_url = response.url
@@ -122,8 +122,6 @@ class IkmanSpider(scrapy.Spider):
 
 
 
-        
-        
 
     def parse_ad(self, response):
         
@@ -154,9 +152,9 @@ class IkmanSpider(scrapy.Spider):
         }
 
     def error_handler(self, failure):
-        self.logger.error(f"An error occurred: {failure}")
         request = failure.request
-        self.logger.error(f"Request URL: {request.url}")
+        self.failed_url_logger.error(f"Request URL: {request.url}")
+
         
 
 
