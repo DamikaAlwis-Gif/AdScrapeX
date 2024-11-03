@@ -43,7 +43,14 @@ Install the project dependencies listed in requirements.txt.
 ```bash
 pip install -r requirements.txt
 ```
- ### 4.Set Up Environment Variables
+### 4.Install Browser binaries
+Once Playwright is installed, you need to install the browser binaries (Chromium, Firefox, and WebKit) that Playwright will automate.
+
+```bash
+playwright install
+```
+
+ ### 5.Set Up Environment Variables
 Navigate to the ad_scraper folder and create a .env file based on the .env.example file. 
 
 ```bash
@@ -56,12 +63,7 @@ SCRAPEOPS_API_KEY=your_scrapeops_api_key
 
 ## Usage
 
-### 1.Navigate to the Spider Folder
-You can find the created spiders in the spiders folder.
-
-```bash
-cd ad_scraper/spiders
-```
+### 1.You can find the created spiders in the spiders folder
 ### 2.Replace the start_urls with your desired urls
 Before running the spider, make sure to replace the start_urls in your spider file with the URLs you want to scrape.
 
