@@ -1,3 +1,25 @@
+# Python
 __pycache__/
-*.pyc
-.env.example
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# Output and data directories
+output/
+job_data/
+
+# IDE
+.vscode/
+*.swp
+.idea/
