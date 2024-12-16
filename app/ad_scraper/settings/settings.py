@@ -52,7 +52,7 @@ DEFAULT_REQUEST_HEADERS = {
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 SPIDER_MIDDLEWARES = {
-   "ad_scraper.middlewares.AdScraperSpiderMiddleware": 543,
+   "ad_scraper.middlewares.middlewares.AdScraperSpiderMiddleware": 543,
 }
 
 SCRAPEOPS_API_KEY = os.environ.get("SCRAPEOPS_API_KEY")
@@ -65,7 +65,7 @@ SCRAPEOPS_NUM_RESULTS = 10
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
   #  "ad_scraper.middlewares.AdScraperDownloaderMiddleware": 543,
-  "ad_scraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 400,
+  "ad_scraper.middlewares.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 400,
   # 'rotating_proxies.middlewares.RotatingProxyMiddleware': 610,
   #   'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
   # 'scrapeops_scrapy_proxy_sdk.scrapeops_scrapy_proxy_sdk.ScrapeOpsScrapyProxySdk': 725,
@@ -110,7 +110,10 @@ REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
-
+# Enable the custom cleaning pipeline
+ITEM_PIPELINES = {
+    'ad_scraper.pipelines.pipelines.AdScraperPipeline': 1,
+}
 
 DOWNLOAD_HANDLERS = {
     "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
