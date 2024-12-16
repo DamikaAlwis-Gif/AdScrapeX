@@ -6,23 +6,14 @@ from ..utils import logger
 class IkmanSpider(scrapy.Spider):
     name = "ikman"
     allowed_domains = ["ikman.lk"]
-    start_urls = ["https://ikman.lk/en/ads/sri-lanka/three-wheelers",
-                  "https://ikman.lk/en/ads/sri-lanka/three-wheelers?sort=date&order=desc&buy_now=0&urgent=0&page=18",
-                  "https://ikman.lk/en/ads/sri-lanka/lorries",
-                  "https://ikman.lk/en/ads/sri-lanka/heavy-duty?page=3",
-                  "https://ikman.lk/en/ads/sri-lanka/tractors?page=2",
-                  "https://ikman.lk/en/ads/sri-lanka/bicycles?sort=date&order=desc&buy_now=0&urgent=0&page=64",
-                  "https://ikman.lk/en/ads/sri-lanka/buses",
-                  "https://ikman.lk/en/ads/sri-lanka/land-for-sale",
-                  "https://ikman.lk/en/ads/sri-lanka/cars?page=6",
-                  "https://ikman.lk/en/ads/sri-lanka/land-for-sale?sort=date&order=desc&buy_now=0&urgent=0&page=80",
-                  "https://ikman.lk/en/ads/sri-lanka/apartments-for-sale?sort=date&order=desc&buy_now=0&urgent=0&page=56",
-                  "https://ikman.lk/en/ads/sri-lanka/apartment-rentals?sort=date&order=desc&buy_now=0&urgent=0&page=18",
-                  "https://ikman.lk/en/ads/sri-lanka/house-rentals?sort=date&order=desc&buy_now=0&urgent=0&page=5",
-                  "https://ikman.lk/en/ads/sri-lanka/mobile-phones?sort=date&order=desc&buy_now=0&urgent=0&page=2",
-                  "https://ikman.lk/en/ads/sri-lanka/computers-tablets?sort=date&order=desc&buy_now=0&urgent=0&page=9",
-                  "https://ikman.lk/en/ads/sri-lanka/computer-accessories?sort=date&order=desc&buy_now=0&urgent=0&page=1"
-                  ]
+    # home electronics page = 135
+    # start_urls = ["https://ikman.lk/en/ads/sri-lanka/electronic-home-appliances?page=135"]
+    # start_urls = ["https://ikman.lk/en/ads/sri-lanka/air-conditions-electrical-fittings?page=137"]
+    # start_urls = ["https://ikman.lk/en/ads/sri-lanka/tvs?page=95"]
+    # start_urls = ["https://ikman.lk/en/ads/sri-lanka/audio-mp3?page=134"]
+    # start_urls = ["https://ikman.lk/en/ads/sri-lanka/other-electronics?page=30"]
+    # start_urls = ["https://ikman.lk/en/ads/sri-lanka/cameras-camcorders?page=65"]
+    start_urls = ["https://ikman.lk/en/ads/sri-lanka/video-games-consoles?page=9"]
     failed_url_logger = logger.get_failed_url_logger()
     async def should_abort_request(request):
         if request.resource_type in [ "media", "font"]:
@@ -40,6 +31,7 @@ class IkmanSpider(scrapy.Spider):
         #     "headless": False,  # Set this to True if you want headless mode
         # },
         "PLAYWRIGHT_ABORT_REQUEST": should_abort_request,
+        # "JOBDIR": "job_data/ikman_job",
 
     }
 
