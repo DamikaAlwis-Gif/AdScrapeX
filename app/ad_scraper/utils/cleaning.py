@@ -18,12 +18,25 @@ def remove_emoji(text):
 
 def process_attributes(attributes):
     """Process the attributes to return a cleaned string."""
-    attributes_pair = []
-    i = 0
-    while i < len(attributes):
-        pair = attributes[i] + attributes[i + 1]
-        i += 2
-        attributes_pair.append(pair)
+    attributes_pair = [ f"{key}: {value}" for key, value in attributes.items() ]
+    # print("***************************************************")
+    # print(attributes)
+    # print("***************************************************")
+
+    # if isinstance(attributes, list):
+    #     items = attributes  # If attributes is already a list, use it as is
+    # else:
+    #     items = list(attributes.items())  # Convert the dictionary to a list of key-value pairs
+    # i = 0
+    # while i < len(attributes) - 1:  # Ensure not going out of bounds
+    #     pair = attributes[i] + attributes[i + 1]
+    #     i += 2
+    #     attributes_pair.append(pair)
+    
+    # # If there's an odd number of attributes, append the last one
+    # if i < len(attributes):
+    #     attributes_pair.append(attributes[i])
+    
     return ", ".join(attributes_pair)
 
 def process_description(description):

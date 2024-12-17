@@ -110,9 +110,11 @@ REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
-# Enable the custom cleaning pipeline
+# Enable the custom cleaning and transformation pipelines
 ITEM_PIPELINES = {
-    'ad_scraper.pipelines.pipelines.AdScraperPipeline': 1,
+    'ad_scraper.pipelines.pipelines.SpiderSpecificPipeline': 300,  # Transform raw spider data
+    'ad_scraper.pipelines.pipelines.AdScraperPipeline': 400,       # General cleaning
+    # 'ad_scraper.pipelines.pipelines.HitadAdScraperPipeline': 500,  # Hitad-specific (optional)
 }
 
 DOWNLOAD_HANDLERS = {
