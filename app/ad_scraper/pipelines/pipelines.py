@@ -4,7 +4,24 @@
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
 from ad_scraper.utils.cleaning import create_combined_description, process_attributes, process_description, set_categories
+from ad_scraper.utils.transformers import transform_riyasewana_data, transform_ikman_data
 from itemadapter import ItemAdapter
+class SpiderSpecificPipeline:
+    """
+    Pipeline for transforming spider-specific raw data into a common schema.
+    """
+    def process_item(self, item, spider):
+        # Apply transformations based on spider name
+        if spider.name == "riyasewana":
+            return transform_riyasewana_data(item)
+        elif spider.name == "ikman":
+            return transform_ikman_data(item)
+        elif spider.name == "hitad":
+            # Additional processing for Hitad (if needed)
+            return item
+        else:
+            # Return unmodified item for unknown spiders
+            return item
 
 class AdScraperPipeline:
     def process_item(self, item, spider):
@@ -31,3 +48,4 @@ class HitadAdScraperPipeline:
         
         # For now, we'll just return the item as is
         return item
+
