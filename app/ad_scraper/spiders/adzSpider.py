@@ -386,8 +386,7 @@ class AdzSpider(scrapy.Spider):
 
         # Create the new URL for the next page
         new_query = urlencode(new_query_params, doseq=True)
-        next_page_url = f"{
-            parsed_url.scheme}://{parsed_url.netloc}{parsed_url.path}?{new_query}"
+        next_page_url = f"{parsed_url.scheme}://{parsed_url.netloc}{parsed_url.path}?{new_query}"
 
         # Log the next page URL for debugging
         self.logger.info(f"Next Page URL: {next_page_url}")

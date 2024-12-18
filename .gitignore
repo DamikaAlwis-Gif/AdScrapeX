@@ -1,2 +1,6 @@
-env
+ad_scraper/.env.example
 ad_scraper/output/**
+venv
+job_data
+*.log
+output
