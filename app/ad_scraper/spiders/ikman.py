@@ -13,7 +13,7 @@ class IkmanSpider(scrapy.Spider):
     # start_urls = ["https://ikman.lk/en/ads/sri-lanka/audio-mp3?page=134"]
     # start_urls = ["https://ikman.lk/en/ads/sri-lanka/other-electronics?page=30"]
     # start_urls = ["https://ikman.lk/en/ads/sri-lanka/cameras-camcorders?page=65"]
-    start_urls = ["https://ikman.lk/en/ads/sri-lanka/video-games-consoles?page=9"]
+    start_urls = ["https://ikman.lk/en/ads/sri-lanka/video-games-consoles?page=1"]
     failed_url_logger = logger.get_failed_url_logger()
     async def should_abort_request(request):
         if request.resource_type in [ "media", "font"]:
