@@ -1,0 +1,26 @@
+1. $env:PYTHONPATH = "D:\Final Year Project\scraper\AdScrapeX\app"
+
+
+
+Steps to ensure it works:
+Ensure your Base is correctly defined in models.py like this:
+
+python
+Copy code
+from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()
+Ensure your alembic.ini is properly configured with your PostgreSQL connection string:
+
+ini
+Copy code
+sqlalchemy.url = postgresql://user:password@localhost/dbname
+After these changes, you can proceed with the following commands:
+
+Generate a migration:
+bash
+Copy code
+alembic revision --autogenerate -m "Initial migration"
+Apply the migration:
+bash
+Copy code
+alembic upgrade head
