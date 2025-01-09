@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, ARRAY, JSON
+from sqlalchemy import Column, Integer, String, Text, ARRAY, JSON, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -17,6 +17,7 @@ class RawListing(Base):
     image_urls = Column(ARRAY(Text))
     additional_data = Column(JSON)
     combined_text = Column(Text)
+    fetched = Column(Boolean, default=False) 
 
     def __repr__(self):
         return f"<RawListing(title={self.title}, url={self.url})>"
