@@ -1,3 +1,6 @@
+import re
+import json
+from datetime import datetime
 
 """
 below is the common schema for the ad data that we want to extract from the spiders.
@@ -38,9 +41,48 @@ def transform_ikman_data(raw_item):
     """
     Transform Ikman spider output into the common schema.
     """
+    meta_data = " ".join(raw_item.get("sub_title", []))
+    # Extract date using regex (format: 'Posted on 31 Jan 10:34 pm')
+    date_match = re.search(r"Posted on (\d{2} \w{3} \d{1,2}:\d{2} [apAP][mM])", meta_data)
+    date_posted = date_match.group(1) if date_match else ""
+
+    # If a date is found, convert it to a proper datetime object
+    if date_posted:
+        try:
+            # Convert the date string to a datetime object (with no year)
+            date_posted = datetime.strptime(date_posted, '%d %b %I:%M %p')
+
+            # Get today's date for comparison
+            today = datetime.today()
+
+            # Check if the extracted date is before today's date in the current year
+            if date_posted.replace(year=today.year) > today:
+                # If the extracted date is in the future, use the previous year
+                date_posted = date_posted.replace(year=today.year - 1)
+            else:
+                # Otherwise, use the current year
+                date_posted = date_posted.replace(year=today.year)
+
+            # Format as 'YYYY-MM-DD HH:MM:SS'
+            date_posted = date_posted.strftime('%Y-%m-%d %H:%M:%S')
+        except ValueError as e:
+            print(f"Error parsing date: {e}")
+            date_posted = ""
+
+    # Extract location (everything after the comma, e.g., 'Piliyandala, Colombo')
+    location_parts = meta_data.split(", ")
+    location = ", ".join(location_parts[1:]).strip() if len(location_parts) > 1 else ""
+
+    # Build the structured meta_data
+    nested_meta_data = {
+        "date": date_posted,
+        "location": location
+    }
+    json_meta_data = json.dumps(nested_meta_data)
+
     return {
         "title": raw_item.get("title", ""),
-        "meta_data": " ".join(raw_item.get("sub_title", [])),  # Combine subtitle as metadata
+        "meta_data": json_meta_data,
         "price": raw_item.get("price", [""])[0],  # Extract first element of the price list
         "attributes": parse_attributes(raw_item.get("attributes", [])),
         "description": combine_description_from_content(raw_item.get("description", [])),
